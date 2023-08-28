@@ -19,6 +19,7 @@
 *.so
 *.dylib
 *.dll
+*.dSYM/
 
 # Fortran module files
 *.mod
@@ -67,5 +68,8 @@ Temporary Items
 ### macOS Patch ###
 # iCloud generated files
 *.icloud
+
+## raytracing ##
+*.ppm
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,c++
