@@ -8,8 +8,8 @@
 
 using namespace std;
 
-int canvas_x;
-int canvas_y;
+int resolution_x;
+int resolution_y;
 
 vec3 left_bottom (-2, -2, -1);
 vec3 horizontal (4, 0, 0);
@@ -17,16 +17,16 @@ vec3 vertical(0, 4, 0);
 vec3 origin (0, 0, 0);
 
 int main () {
-    canvas_x = 300;  // set canvas
-    canvas_y = 300;
+    resolution_x = 300;  // set canvas
+    resolution_y = 300;
 
-    PPM ppm = easyppm_create(canvas_x, canvas_y, IMAGETYPE_PPM);
+    PPM ppm = easyppm_create(resolution_x, resolution_y, IMAGETYPE_PPM);
 
-    for(int y = canvas_y - 1; y >= 0; --y) {  // from bottom
-        for(int x = 0; x < canvas_x; ++x) {  // from left
+    for(int y = resolution_y - 1; y >= 0; --y) {  // from bottom
+        for(int x = 0; x < resolution_x; ++x) {  // from left
 
-            float u = static_cast<float>(x) / static_cast<float>(canvas_x);  // [0, 4]
-            float v = static_cast<float>(y) / static_cast<float>(canvas_y);  // [0, 4]
+            float u = static_cast<float>(x) / static_cast<float>(resolution_x);  // [0, 4]
+            float v = static_cast<float>(y) / static_cast<float>(resolution_y);  // [0, 4]
             vec3 p = vec3(left_bottom + u * horizontal + v * vertical);  // [-2, 2]
 
             ray r( origin, (p - origin) );

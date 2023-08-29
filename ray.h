@@ -14,7 +14,7 @@ vec3 get_origin();
 vec3 get_direction();
 
 // end point of ray
-vec3 point_at_parameter(float t);
+vec3 shoot_ray(float t);
 
 vec3 origin;  // (point)
 vec3 dir_unit;  // (vector)

@@ -19,6 +19,6 @@ vec3 ray::get_direction() {
 
 
 // end point of ray
-vec3 ray::point_at_parameter(float t) {
+vec3 ray::shoot_ray(float t) {
     return origin + t * dir_unit;
 }
