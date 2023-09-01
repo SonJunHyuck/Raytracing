@@ -18,6 +18,7 @@ vec3 ray::get_direction() {
 
 
 // end point of ray
-vec3 ray::shoot_ray(float t) {
+vec3 ray::shoot_ray(float t) const
+{
     return origin + t * dir_unit;
 }

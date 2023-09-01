@@ -1,23 +1,24 @@
 #pragma once
 
 #include <iostream>
+#include <limits>
 #include "vec3.h"
 #include "ray.h"
+#include "hitable.h"
 #include "sphere.h"
 
-static vec3 color(ray r);
-static float hit_sphere(const sphere& s, const ray& r);
+static vec3 color(const ray& r, hitable_obj* world);
 
-// test color (depending on y coordinate of ray dir)
-static vec3 color(ray r) {
+static vec3 color(const ray& r, hitable_obj* world)
+{
     vec3 col;
-    sphere s = sphere(vec3(0, 0, -1), 0.5f);
-    float t = hit_sphere(s, r);
+    hit_record rec;
+    float t;
 
-    // ray와 충돌했는가?
-    if (t >= 0)
+    // world is hit_list
+    if(world->hit(r, 0.0f, std::numeric_limits<float>::max(), rec))
     {
-        vec3 N = unit_vector(r.shoot_ray(t) - s.center);
+        vec3 N = rec.normal;
         col = 0.5f * vec3(N.x() + 1, N.y() + 1, N.z() + 1);
     }
     else {
@@ -27,29 +28,4 @@ static vec3 color(ray r) {
     }
 
     return col;
-}
-
-static float hit_sphere(const sphere& s, const ray& r) {
-    float a = dot(r.dir_unit, r.dir_unit);
-    float b = 2.0f * dot(r.dir_unit, r.origin - s.center);
-    float c = dot(r.origin - s.center, r.origin - s.center) - pow(s.radius, 2);
-
-    // root-finder 판별식
-    float d = pow(b, 2) - 4 * a * c;
-
-    float positive_t = (-b + sqrt(d)) / (2 * a);
-    float negative_t = (-b - sqrt(d)) / (2 * a);
-
-    float t;
-
-    // 충돌 했는가?
-    if(d >= 0) {
-        // 둘 중 작은 값 선택
-        t = negative_t > 0 ? negative_t : positive_t;
-    }
-    else {
-        t = -1.0f;
-    }
-    
-    return t;
 }

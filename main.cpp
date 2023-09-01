@@ -5,6 +5,9 @@
 
 #include "utility.h"
 #include "ray.h"
+#include "hitable.h"
+#include "hit_list.h"
+#include "sphere.h"
 
 using namespace std;
 
@@ -20,6 +23,11 @@ int main () {
     resolution_x = 300;  // set canvas
     resolution_y = 300;
 
+    hitable_obj *list[2];
+    list[0] = new sphere(vec3(0, 0, -1), 0.5f);
+    list[1] = new sphere(vec3(0, -100.5f, -1), 100);
+    hit_list* world = new hit_list(list, 2);
+
     PPM ppm = easyppm_create(resolution_x, resolution_y, IMAGETYPE_PPM);
 
     for(int y = resolution_y - 1; y >= 0; --y) {  // from bottom
@@ -30,8 +38,7 @@ int main () {
             vec3 p = vec3(left_bottom + u * horizontal + v * vertical);  // [-2, 2]
 
             ray r( origin, (p - origin) );
-
-            vec3 col = color(r);
+            vec3 col = color(r, world);
 
             ppmcolor c;
             c.r = static_cast<int>(255.0f * col.x());  // float -> int (in compile phase)

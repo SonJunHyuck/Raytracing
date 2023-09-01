@@ -17,5 +17,5 @@ vec3 get_origin();
 vec3 get_direction();
 
 // end point of ray
-vec3 shoot_ray(float t);
+vec3 shoot_ray(float t) const;
 };
