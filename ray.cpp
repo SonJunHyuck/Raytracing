@@ -3,8 +3,7 @@
 ray::ray () { }
 ray::ray (const vec3& a, const vec3& b) {
     origin = a;
-    dir_unit = b;
-    dir_unit.make_unit_vector();
+    dir_unit = unit_vector(b);
 }
 
 // return origin position
