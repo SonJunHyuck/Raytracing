@@ -2,12 +2,20 @@
 
 #include <iostream>
 #include <limits>
+#include <random>
+#include <time.h>
 #include "vec3.h"
 #include "ray.h"
 #include "hitable.h"
 #include "sphere.h"
 
+static float random_real();
 static vec3 color(const ray& r, hitable_obj* world);
+
+static float random_real()
+{
+    return (float)rand() / RAND_MAX;
+}
 
 static vec3 color(const ray& r, hitable_obj* world)
 {
