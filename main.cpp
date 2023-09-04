@@ -48,6 +48,7 @@ int main()
             }
 
             col /= static_cast<float>(sampling_size);
+            col = vec3(sqrt(col.x()), sqrt(col.y()), sqrt(col.z()));  // gamma correction
 
             ppmcolor c;
             c.r = static_cast<int>(255.0f * col.x()); // float -> int (in compile phase)

@@ -25,7 +25,7 @@ static vec3 random_in_unit_sphere()
     // 1보다 작은 크기의 유닛 벡터 반납
     do
     {
-        float x = random_real();
+        float x = random_real();  // [0, 1]
         float y = random_real();
         float z = random_real();
 
@@ -48,8 +48,6 @@ static vec3 color(const ray& r, hitable_obj* world)
     {
         vec3 target = rec.p + rec.normal + random_in_unit_sphere();
         ray new_ray = ray(rec.p, target - rec.p);
-
-        // reculsive problem
         col = 0.5f * color(new_ray, world);
     }
     else {
