@@ -19,6 +19,8 @@ camera cam;
 
 int main()
 {
+    srand(time(NULL));
+
     resolution_x = 300; // set canvas
     resolution_y = 300;
     sampling_size = 100;
