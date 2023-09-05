@@ -8,11 +8,9 @@ sphere::sphere(float x, float y, float z, float r)
     radius = r;
 }
 
-sphere::sphere(const vec3& pos, float r)
-{
-    center = pos;
-    radius = r;
-}
+sphere::sphere(const vec3& pos, float r) : center(pos), radius(r) { }
+
+sphere::sphere(const vec3& pos, float r, material* m) : center(pos), radius(r), mat_ptr(m) { }
 
 bool sphere::hit(const ray& r, float t_min, float t_max, hit_record& rec) const
 {  
@@ -42,6 +40,7 @@ bool sphere::hit(const ray& r, float t_min, float t_max, hit_record& rec) const
             rec.t = t;
             rec.p = r.shoot_ray(t);
             rec.normal = unit_vector(r.shoot_ray(t) - center);
+            rec.mat_ptr = mat_ptr;
             return true;
         }
     }

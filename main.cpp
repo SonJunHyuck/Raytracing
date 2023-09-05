@@ -8,6 +8,8 @@
 #include "hitable.h"
 #include "hit_list.h"
 #include "sphere.h"
+#include "mat_lambertian.h"
+#include "mat_metal.h"
 #include "camera.h"
 
 using namespace std;
@@ -26,10 +28,13 @@ int main()
     sampling_size = 100;
     cam = camera();
 
-    hitable_obj *list[2];
-    list[0] = new sphere(vec3(0, 0, -1), 0.5f);
-    list[1] = new sphere(vec3(0, -100.5f, -1), 100);
-    hit_list *world = new hit_list(list, 2);
+    int obj_size = 4;
+    hitable_obj *list[obj_size];
+    list[0] = new sphere(vec3(0, 0, -1), 0.5f, new lambertian(vec3(0.8f, 0.3f, 0.3f)));
+    list[1] = new sphere(vec3(0, -100.5f, -1), 100, new lambertian(vec3(0.8f, 0.8f, 0)));
+    list[2] = new sphere(vec3(1, 0, -1), 0.5f, new metal(vec3(0.8f, 0.6f, 0.2f), 0.3f));
+    list[3] = new sphere(vec3(-1, 0, -1), 0.5f, new metal(vec3(0.8f, 0.8f, 0.8f), 0.3f));
+    hit_list *world = new hit_list(list, obj_size);
 
     PPM ppm = easyppm_create(resolution_x, resolution_y, IMAGETYPE_PPM);
 
@@ -44,7 +49,7 @@ int main()
                 float v = static_cast<float>(y + random_real()) / static_cast<float>(resolution_y);
 
                 ray r = cam.get_ray(u, v);
-                col += color(r, world);
+                col += color(r, world, 0);
             }
 
             col /= static_cast<float>(sampling_size);

@@ -7,10 +7,16 @@
 #include "vec3.h"
 #include "ray.h"
 #include "hitable.h"
+#include "material.h"
+
+#define VEC_ZERO vec3(0, 0, 0)
+#define VEC_ONE vec3(1, 1, 1)
+#define MAX_RECURSIVE 50
+
 
 static float random_real();
 static vec3 random_in_unit_sphere();
-static vec3 color(const ray& r, hitable_obj* world);
+static vec3 color(const ray& r, hitable_obj* world, int depth);
 
 static float random_real()
 {
@@ -37,23 +43,31 @@ static vec3 random_in_unit_sphere()
     return p;
 }
 
-static vec3 color(const ray& r, hitable_obj* world)
+static vec3 color(const ray& r, hitable_obj* world, int depth)
 {
-    vec3 col = vec3(0, 0, 0);
+    vec3 col;
     hit_record rec;
-    float t = 0;
 
     // world is hit_list
-    if(world->hit(r, 0.0f, std::numeric_limits<float>::max(), rec))
+    if(world->hit(r, 0.01f, std::numeric_limits<float>::max(), rec))
     {
-        vec3 target = rec.p + rec.normal + random_in_unit_sphere();
-        ray new_ray = ray(rec.p, target - rec.p);
-        col = 0.5f * color(new_ray, world);
+        ray scattered;
+        vec3 attenuation;
+        
+        if(depth < MAX_RECURSIVE && rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+        {
+            col = attenuation * color(scattered, world, depth + 1);
+        }
+        else
+        {
+            col = VEC_ZERO;
+        }
     }
     else {
+        float t = 0;
         t = r.dir_unit.y();
         t = (t + 1) * 0.5f;  // [-1, 1] -> [0, 1]
-        col = (1.0f - t) * vec3(1, 1, 1) + t * vec3(0.5f, 0.7f, 1.0f);
+        col = (1.0f - t) * VEC_ONE + t * vec3(0.5f, 0.7f, 1.0f);
     }
 
     return col;
