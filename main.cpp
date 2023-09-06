@@ -10,6 +10,8 @@
 #include "sphere.h"
 #include "mat_lambertian.h"
 #include "mat_metal.h"
+#include "mat_dielectric.h"
+
 #include "camera.h"
 
 using namespace std;
@@ -33,7 +35,7 @@ int main()
     list[0] = new sphere(vec3(0, 0, -1), 0.5f, new lambertian(vec3(0.8f, 0.3f, 0.3f)));
     list[1] = new sphere(vec3(0, -100.5f, -1), 100, new lambertian(vec3(0.8f, 0.8f, 0)));
     list[2] = new sphere(vec3(1, 0, -1), 0.5f, new metal(vec3(0.8f, 0.6f, 0.2f), 0.3f));
-    list[3] = new sphere(vec3(-1, 0, -1), 0.5f, new metal(vec3(0.8f, 0.8f, 0.8f), 0.3f));
+    list[3] = new sphere(vec3(-1, 0, -1), 0.5f, new dielectric(2.5f));
     hit_list *world = new hit_list(list, obj_size);
 
     PPM ppm = easyppm_create(resolution_x, resolution_y, IMAGETYPE_PPM);

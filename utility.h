@@ -16,10 +16,9 @@
 
 static float random_real();
 static vec3 random_in_unit_sphere();
-
+static vec3 reflect(const vec3& v, const hit_record& rec);
 static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refracted);
 static float schlick(float cosine, float ref_idx);
-
 static vec3 color(const ray& r, hitable_obj* world, int depth);
 
 static float random_real()
@@ -27,7 +26,6 @@ static float random_real()
     return (float)rand() / RAND_MAX;
 }
 
-// 1크기의 sphere 안에서 무작위 지점을 반환
 static vec3 random_in_unit_sphere()
 {
     vec3 p;
@@ -47,14 +45,24 @@ static vec3 random_in_unit_sphere()
     return p;
 }
 
-static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refracted)
+static vec3 reflect(const ray& in_r, const hit_record& rec)
+{
+    vec3 reflected;     // reflect
+    vec3 reverse_in_dir = -in_r.dir_unit;       // dot product할 때, 시작점이 같아야함
+    vec3 projected = dot(reverse_in_dir, rec.normal) * rec.normal;
+    reflected = 2 * projected - reverse_in_dir;
+    
+    return reflected;
+}
+
+static bool refract(const vec3& in_v, const vec3& n, float n1_over_n2, vec3& refracted)
 {
     // refract 판별식 (0보타 크면, refraction)
-    float determinant = 1 - ( pow(n1_over_n2, 2) * (1 - pow(dot(v, n), 2) ) );
+    float determinant = 1 - ( pow(n1_over_n2, 2) * (1 - pow(dot(in_v, n), 2) ) );
 
     if(determinant > 0)
     {
-        refracted = n1_over_n2 * (v - dot(v, n) * n) - (sqrt(determinant)) * n;
+        refracted = n1_over_n2 * (in_v - dot(in_v, n) * n) - (sqrt(determinant)) * n;
         return true;
     }
     else
@@ -66,8 +74,9 @@ static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refrac
 static float schlick(float cosine, float n1_over_n2)
 {
     float R0 = pow((1 - n1_over_n2) / (1 + n1_over_n2), 2);
+    float R = R0 + (1 - R0) * pow((1 - cosine), 5);
 
-    return R0;
+    return R;
 }
 
 static vec3 color(const ray& r, hitable_obj* world, int depth)
