@@ -16,6 +16,10 @@
 
 static float random_real();
 static vec3 random_in_unit_sphere();
+
+static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refracted);
+static float schlick(float cosine, float ref_idx);
+
 static vec3 color(const ray& r, hitable_obj* world, int depth);
 
 static float random_real()
@@ -41,6 +45,29 @@ static vec3 random_in_unit_sphere()
     }while(p.length() >= 1);
 
     return p;
+}
+
+static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refracted)
+{
+    // refract 판별식 (0보타 크면, refraction)
+    float determinant = 1 - ( pow(n1_over_n2, 2) * (1 - pow(dot(v, n), 2) ) );
+
+    if(determinant > 0)
+    {
+        refracted = n1_over_n2 * (v - dot(v, n) * n) - (sqrt(determinant)) * n;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+static float schlick(float cosine, float n1_over_n2)
+{
+    float R0 = pow((1 - n1_over_n2) / (1 + n1_over_n2), 2);
+
+    return R0;
 }
 
 static vec3 color(const ray& r, hitable_obj* world, int depth)
