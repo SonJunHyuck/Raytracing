@@ -57,14 +57,16 @@ static vec3 reflect(const ray& in_r, const hit_record& rec)
 
 static bool refract(const vec3& in_v, const vec3& n, float n1_over_n2, vec3& refracted)
 {
-    // refract 판별식 (0보타 크면, refraction)
+    // refract 판별식
     float determinant = 1 - ( pow(n1_over_n2, 2) * (1 - pow(dot(in_v, n), 2) ) );
 
+    // 0보다 크면, refraction
     if(determinant > 0)
     {
         refracted = n1_over_n2 * (in_v - dot(in_v, n) * n) - (sqrt(determinant)) * n;
         return true;
     }
+    // 작거나 같으면, internal reflection
     else
     {
         return false;
