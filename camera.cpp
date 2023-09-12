@@ -23,7 +23,7 @@ camera::camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_u
     // image plane
     left_bottom = (origin + w) - (half_width * u) - (half_height * v);
     horizontal = 2.0f * half_width * u;
-    vertical = 2.0f * half_height * v;
+    vertical = 2.0f * half_height * v;  
 }
 
 // shoot ray from camera pos to image plane
