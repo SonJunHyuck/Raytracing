@@ -1,6 +1,7 @@
 #pragma once
 #include "vec3.h"
 #include "ray.h"
+#include "utility.h"
 
 class camera 
 {
@@ -11,5 +12,7 @@ class camera
     vec3 vertical;          // height of image plane
 
     camera();
+    camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_up);
+
     ray get_ray(float u, float v);
 };

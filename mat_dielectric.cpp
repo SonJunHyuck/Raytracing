@@ -14,7 +14,7 @@ bool dielectric::scatter(const ray& in_r, const hit_record& rec, vec3& attenuati
     vec3 outward_normal;
     float n1_over_n2;
     
-    // Object -> Air
+    // Object -> out Air
     if(cosine > 0)
     {
         outward_normal = -rec.normal;

@@ -28,7 +28,8 @@ int main()
     resolution_x = 300; // set canvas
     resolution_y = 300;
     sampling_size = 100;
-    cam = camera();
+    camera cam(vec3(-2, 2, 1), vec3(0, 0, -1), 90.0f,
+            static_cast<float>(resolution_x) / static_cast<float>(resolution_y), vec3(0, 1, 0));
 
     int obj_size = 4;
     hitable_obj *list[obj_size];
