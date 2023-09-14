@@ -28,8 +28,14 @@ int main()
     resolution_x = 300; // set canvas
     resolution_y = 300;
     sampling_size = 100;
-    camera cam(vec3(-2, 2, 1), vec3(0, 0, -1), 90.0f,
-            static_cast<float>(resolution_x) / static_cast<float>(resolution_y), vec3(0, 1, 0));
+
+    vec3 look_from = vec3(3.0f, 3.0f, 2.0f);
+    vec3 look_at = vec3(0, 0, -1.0f);
+    float fov = 20.0f;
+    float aspect_ratio = static_cast<float>(resolution_x) / static_cast<float>(resolution_y);
+    float aperture = 2.0f;
+    float focus_dist = 5.2f;
+    camera cam(look_from, look_at, fov, aspect_ratio, VEC_UP, aperture, focus_dist);
 
     int obj_size = 4;
     hitable_obj *list[obj_size];

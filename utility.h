@@ -11,10 +11,11 @@
 
 #define VEC_ZERO vec3(0, 0, 0)
 #define VEC_ONE vec3(1, 1, 1)
+#define VEC_UP vec3(0, 1, 0)
 #define MAX_RECURSIVE 50
 
-
 static float random_real();
+static vec3 random_in_unit_disk();
 static vec3 random_in_unit_sphere();
 static vec3 reflect(const vec3& v, const hit_record& rec);
 static bool refract(const vec3& v, const vec3& n, float n1_over_n2, vec3& refracted);
@@ -39,6 +40,24 @@ static vec3 random_in_unit_sphere()
 
         p = vec3(x, y, z);
         p = (2.0f * p) - vec3(1, 1, 1);  // [-1, 1]
+
+    }while(p.length() >= 1);
+
+    return p;
+}
+
+static vec3 random_in_unit_disk()
+{
+    vec3 p;
+
+    // 1보다 작은 크기의 유닛 벡터 반납
+    do
+    {
+        float x = random_real();  // [0, 1]
+        float y = random_real();
+
+        p = vec3(x, y, 0);
+        p = (2.0f * p) - vec3(1, 1, 0);  // [-1, 1]
 
     }while(p.length() >= 1);
 

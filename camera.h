@@ -11,8 +11,10 @@ class camera
     vec3 horizontal;        // width of image plane
     vec3 vertical;          // height of image plane
 
+    float lens_radius;
+
     camera();
-    camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_up);
+    camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_up, float aperture, float focal_dist);
 
     ray get_ray(float u, float v);
 };
