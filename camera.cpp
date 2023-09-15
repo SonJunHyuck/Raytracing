@@ -22,7 +22,7 @@ camera::camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_u
     vec3 u = unit_vector(cross(w, v_up));  // 순서 중요
     vec3 v = unit_vector(cross(u, w));  // 순서 중요
 
-    // image plane
+    // image plane -> focal(focus) plane
     left_bottom = (origin + focal_dist * w) - (focal_dist * half_width * u) - (focal_dist * half_height * v);
     horizontal = 2.0f * focal_dist * half_width * u;
     vertical = 2.0f * focal_dist * half_height * v;
@@ -31,8 +31,12 @@ camera::camera(vec3 look_from, vec3 look_at, float fov_y, float aspect, vec3 v_u
 // shoot ray from camera pos to image plane
 ray camera::get_ray(float u, float v)
 {
+    // 렌즈의 크기에 맞게, 랜덤하게 렌즈를 만듦
     vec3 random = lens_radius * random_in_unit_disk();
+
+    // u, v룰 곱해줘서, 크게 벗어나지 않게 보정 (u, v 안곱해주면 착란원이 커져서 주변이 너무 흐릿해짐)
     vec3 offset = vec3(random.x() * u, random.y() * v, 0);
+
     vec3 p = left_bottom + (u * horizontal) + (v * vertical);  // [-2, 2]
     ray r( origin + offset, ( p - (origin + offset) ) );
 

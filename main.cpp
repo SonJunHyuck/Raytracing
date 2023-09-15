@@ -34,8 +34,8 @@ int main()
     float fov = 20.0f;
     float aspect_ratio = static_cast<float>(resolution_x) / static_cast<float>(resolution_y);
     float aperture = 2.0f;
-    float focus_dist = 5.2f;
-    camera cam(look_from, look_at, fov, aspect_ratio, VEC_UP, aperture, focus_dist);
+    float focal_dist = 5.2f;
+    camera cam(look_from, look_at, fov, aspect_ratio, VEC_UP, aperture, focal_dist);
 
     int obj_size = 4;
     hitable_obj *list[obj_size];
